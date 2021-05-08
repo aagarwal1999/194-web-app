@@ -1,9 +1,9 @@
 import { combineReducers } from "redux"
-import { ExampleReducer } from "./example"
+import { SummaryReducer } from "./summarize"
 
 // register all reducers for the various store spaces
 export const rootReducer = combineReducers({
-    example: ExampleReducer,
+    summary: SummaryReducer,
 })
 
 export default rootReducer

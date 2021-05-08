@@ -6,6 +6,7 @@ from config import load_config, get_log_folder, get_mysql_config
 from pbu import Logger
 from storage.shared import db
 from storage.models.dataset import Dataset
+from storage.models.production_data import ProductionData
 
 
 # load config from .env file
@@ -19,9 +20,8 @@ uri = 'mysql://{0}:{1}@{2}/{3}'.format(username, password, host, db_name)
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = uri
 db.init_app(app)
-
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+migrate = Migrate()
+migrate.init_app(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)

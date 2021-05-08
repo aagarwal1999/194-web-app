@@ -54,7 +54,7 @@ class CustomDataset(Dataset):
 
 def train(epoch, tokenizer, model, device, loader, optimizer):
     model.train()
-    for _,data in enumerate(loader, 0):
+    for idx ,data in enumerate(loader, 0):
         y = data['target_ids'].to(device, dtype = torch.long)
         y_ids = y[:, :-1].contiguous()
         # lm_labels = y[:, 1:].clone().detach()
@@ -66,7 +66,7 @@ def train(epoch, tokenizer, model, device, loader, optimizer):
         # loss = outputs[0]
         # import pdb; pdb.set_trace()
 
-        if _%10 == 0:
+        if idx %10 == 0:
             wandb.log({"Training Loss": loss.item()})
 
         # if _%500==0:
@@ -76,7 +76,7 @@ def train(epoch, tokenizer, model, device, loader, optimizer):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        if _ == 1000:
+        if idx == 1000:
             break
         # xm.optimizer_step(optimizer)
         # xm.mark_step()

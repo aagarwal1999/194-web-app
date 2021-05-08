@@ -6,7 +6,7 @@ const exampleActions = {
     CREATE_EXAMPLE: "CREATE_EXAMPLE",
 }
 
-export const getExamples = () => ({
+export const getMetricsData = () => ({
     type: exampleActions.GET_EXAMPLES,
     payload: fetch("/api/examples", {
         headers: util.getJsonHeader(),
@@ -14,7 +14,9 @@ export const getExamples = () => ({
 })
 
 const initialState = {
-    exampleList: [],
+    one_paragraph_summary: "",
+    one_line_summary: "",
+    loading: false
 }
 
 // reducer

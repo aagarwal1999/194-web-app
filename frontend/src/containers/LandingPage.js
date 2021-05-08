@@ -6,7 +6,9 @@ import Dashboard from "../components/Dashboard";
 
 @connect(store => ({
     // linking the redux store with this component
-    examples: store.example.exampleList,
+    one_line_summary: store.summary.one_line_summary,
+    one_paragraph_summary: store.summary.one_paragraph_summary,
+    is_loading: store.summary.is_loading
 }))
 class LandingPage extends React.Component {
 

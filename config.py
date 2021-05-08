@@ -4,7 +4,6 @@ import os
 
 
 DEFAULTS = {
-    # TODO: remove unsed database
     "MYSQL_HOST": "localhost",
     "MYSQL_USERNAME": "myuser",
     "MYSQL_PASSWORD": "mypassword",
@@ -50,11 +49,6 @@ def get_log_folder():
 def get_mysql_config():
     config = load_config()
     return config["MYSQL_HOST"], config["MYSQL_DATABASE"], config["MYSQL_USERNAME"], config["MYSQL_PASSWORD"]
-
-
-def get_mongodb_config():
-    config = load_config()
-    return config["MONGO_URL"], config["MONGO_DB"]
 
 
 def get_timezone():

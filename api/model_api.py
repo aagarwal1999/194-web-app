@@ -3,6 +3,7 @@ from pbu import list_to_json
 from storage.models.dataset import Dataset
 from storage.models.production_data import ProductionData
 import datetime
+import time as t
 
 
 def register_endpoints(app, session):
@@ -21,14 +22,16 @@ def register_endpoints(app, session):
 
     @app.route("/api/summarize", methods=["POST"])
     def summarize():
-        body = request.get_json()
-        print(body)
-        data = body["data"]
+        data = request.get_json()
         time = datetime.datetime.now()
         one_line_summary = "hello"
         paragraph_summary = "hi man"
-        new_data_pont = ProductionData(data=data, time=time, one_line_summary=one_line_summary, one_paragraph_summary=paragraph_summary)
-        session.add(new_data_pont)
+        new_data_point = ProductionData(data=data, time=time, one_line_summary=one_line_summary, one_paragraph_summary=paragraph_summary)
+        session.add(new_data_point)
         session.commit()
+        return jsonify({
+            "one_line_summary": one_line_summary,
+            "one_paragraph_summary": paragraph_summary
+        })
 
 
