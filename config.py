@@ -9,9 +9,6 @@ DEFAULTS = {
     "MYSQL_USERNAME": "myuser",
     "MYSQL_PASSWORD": "mypassword",
     "MYSQL_DATABASE": "mydatabase",
-    "MONGO_URL": "mongodb://localhost:27017",
-    "MONGO_DB": "mydatabase",
-
     "LOG_FOLDER": "_logs",
     "IS_DEBUG": False,
 }
@@ -29,9 +26,6 @@ def load_config():
         "MYSQL_USERNAME": os.getenv("MYSQL_USERNAME"),
         "MYSQL_PASSWORD": os.getenv("MYSQL_PASSWORD"),
         "MYSQL_DATABASE": os.getenv("MYSQL_DATABASE"),
-        "MONGO_URL": os.getenv("MONGO_URL"),
-        "MONGO_DB": os.getenv("MONGO_DB"),
-
         "LOG_FOLDER": os.getenv("LOG_FOLDER"),
         "IS_DEBUG": os.getenv("IS_DEBUG") == "1",
     }

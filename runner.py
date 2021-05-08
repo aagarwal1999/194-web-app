@@ -1,11 +1,11 @@
 from flask import Flask
 # TODO: clean up unused imports
-from pbu import Logger, MysqlConnection
+from pbu import Logger
+from storage.shared import db
 from config import load_config, get_log_folder, get_mongodb_config, get_mysql_config
-from storage.example_mongo_store import ExampleStore as ExampleMongoStore
-from storage.example_mysql_store import ExampleStore as ExampleMysqlStore
+from flask_migrate import Migrate
 import api.static_api as static_api
-import api.example_api as example_api
+import api.model_api as model_api
 
 if __name__ == "__main__":
     logger = Logger("MAIN", log_folder=get_log_folder())
@@ -19,24 +19,18 @@ if __name__ == "__main__":
     # ---- database and stores ----
 
     # create mysql connection (TODO: remove this block or uncomment)
-    # host, db, username, password = get_mysql_config()
-    # con = MysqlConnection(host, db, username, password)
-
-    # fetch mongo config (TODO: remove this block or uncomment)
-    mongo_url, mongo_db = get_mongodb_config()
-
-    # initialise stores # TODO: add stores here and remove examples
-    stores = {
-        # "mysql_example": ExampleMysqlStore(connection=con, table_name="example"),
-        "mongo_example": ExampleMongoStore(mongo_url=mongo_url, mongo_db=mongo_db, collection_name="examples"),
-    }
+    host, db_name, username, password = get_mysql_config()
+    uri = 'mysql://{0}:{1}@{2}/{3}'.format(username, password, host, db_name)
 
     # create flask app
     app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri
+    db.init_app(app)
+
     # register endpoints
     static_api.register_endpoints(app)
     # TODO: replace this with your (multiple) API registrations
-    example_api.register_endpoints(app, stores)
+    model_api.register_endpoints(app, db.session)
 
     # start flask app
     app.run(host='0.0.0.0', port=5555, debug=config["IS_DEBUG"])
