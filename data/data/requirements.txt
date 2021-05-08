@@ -1,0 +1,8 @@
+requests
+bs4 
+json
+newspaper 
+pandas
+urllib
+outfile
+csv

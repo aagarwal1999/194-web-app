@@ -11,7 +11,6 @@ def register_endpoints(app, session):
     @app.route("/api/get-prod-metrics", methods=["GET"])
     def get_prod_metrics():
         metrics = Dataset.query.filter(name="production").first()
-        print(metrics)
         return jsonify(metrics)
     
     @app.route("/api/get-all-metrics", methods=["GET"])

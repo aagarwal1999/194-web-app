@@ -1,6 +1,8 @@
-import React from "react"
-import { connect } from "react-redux"
-import { getExamples } from "../redux/example"
+import React from "react";
+import { connect } from "react-redux";
+import { getExamples } from "../redux/example";
+import Dashboard from "../components/Dashboard";
+
 
 @connect(store => ({
     // linking the redux store with this component
@@ -13,7 +15,11 @@ class LandingPage extends React.Component {
     }
 
     render() {
-        return <div>Landing Page</div>
+        return (
+            <div> 
+                <Dashboard/>
+            </div>
+        )
     }
 }
 
