@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getExamples } from "../redux/example";
+import { getMetricsData } from "../redux/example";
 import Dashboard from "../components/Dashboard";
 
 
@@ -11,7 +11,7 @@ import Dashboard from "../components/Dashboard";
 class LandingPage extends React.Component {
 
     componentDidMount() {
-        this.props.dispatch(getExamples())
+        this.props.dispatch(getMetricsData())
     }
 
     render() {

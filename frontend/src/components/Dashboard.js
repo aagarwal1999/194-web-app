@@ -20,7 +20,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import APICallBox from './APICallBox';
-import Deposits from './Deposits';
+import DailyAPICallSummary from './DailyAPICallSummary';
 import Orders from './Orders';
 
 function Copyright() {
@@ -166,8 +166,6 @@ export default function Dashboard() {
         </div>
         <Divider />
         <List>{mainListItems}</List>
-        <Divider />
-        <List>{secondaryListItems}</List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
@@ -182,7 +180,7 @@ export default function Dashboard() {
             {/* Recent Deposits */}
             <Grid item xs={12} md={4} lg={3}>
               <Paper className={fixedHeightPaper}>
-                <Deposits />
+                <DailyAPICallSummary />
               </Paper>
             </Grid>
             {/* Recent Orders */}

@@ -87,4 +87,14 @@ export default {
     setAuthToken(token) {
         localStorage.setItem("auth_token", token)
     },
+    
+    getCurrentDate(separator='/'){
+
+        let newDate = new Date()
+        let date = newDate.getDate();
+        let month = newDate.getMonth() + 1;
+        let year = newDate.getFullYear();
+        
+        return `${month<10?`0${month}`:`${month}`}${separator}${date<10?`0${date}`:`${date}`}${separator}${year}`
+    }
 }

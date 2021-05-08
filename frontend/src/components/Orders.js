@@ -6,6 +6,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import {Button, Grid} from '@material-ui/core'
 import Title from './Title';
 
 // Generate Order Data
@@ -35,15 +36,22 @@ export default function Orders() {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent API Calls</Title>
+      <Grid container direction="row" justify="space-between" alignItems="stretch" > 
+        <Grid item xs={10}> 
+          <Title>Recent API Calls</Title>
+        </Grid>
+        <Grid item xs={2}> 
+          <Button color="primary" variant="contained"> Refresh </Button>
+        </Grid>
+      </Grid> 
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Ship To</TableCell>
-            <TableCell>Payment Method</TableCell>
-            <TableCell align="right">Sale Amount</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>Text</TableCell>
+            <TableCell>One Line Prediction</TableCell>
+            <TableCell align="right"> One Paragraph Prediction</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -58,11 +66,6 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
-      <div className={classes.seeMore}>
-        <Link color="primary" href="#" onClick={preventDefault}>
-          See more orders
-        </Link>
-      </div>
     </React.Fragment>
   );
 }
