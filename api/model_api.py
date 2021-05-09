@@ -1,37 +1,55 @@
 from flask import jsonify, request
 from pbu import list_to_json
-from storage.models.dataset import Dataset
-from storage.models.production_data import ProductionData
-import datetime
-import time as t
+from prod_pipeline.prod import ProdOperations
 
 
 def register_endpoints(app, session):
+    ops = ProdOperations(session)
 
-    # extract stores for API endpoints (mongo_example is just for illustration)
-    @app.route("/api/get-prod-metrics", methods=["GET"])
-    def get_prod_metrics():
-        metrics = Dataset.query.filter(name="production").first()
-        return jsonify(metrics)
+    @app.route("/api/refresh-prod-calls", methods=["GET"])
+    def refresh_prod_calls():
+        recent_prod_data = ops.get_recent_prod_data()
+        calls = ops.get_daily_prod_data_calls()
+
+        return jsonify({
+            "num_daily_api_calls": calls,
+            "recent_api_calls": recent_prod_data
+        })
     
-    @app.route("/api/get-all-metrics", methods=["GET"])
-    def get_all_metrics():
-        metrics = Dataset.query.all()
-        print(metrics)
-        return jsonify(list_to_json(metrics))
+    @app.route("/api/get-data", methods=["GET"])
+    def get_data():
+        metric_data = ops.get_all_metrics()
+        calls = ops.get_daily_prod_data_calls()
+        recent_prod_data = ops.get_recent_prod_data()
+
+        return jsonify({
+            "metric_data": metric_data,
+            "num_daily_api_calls": calls,
+            "recent_api_calls": recent_prod_data
+        })
+
+    @app.route("/api/refresh-prod-metrics", methods=["GET"])
+    def refresh_prod_metrics():
+        ops.refresh_metrics()
+        metric_data = ops.get_all_metrics()
+        session.commit()
+        return jsonify({
+            "metric_data": metric_data,
+        })
 
     @app.route("/api/summarize", methods=["POST"])
     def summarize():
         data = request.get_json()
-        time = datetime.datetime.now()
-        one_line_summary = "hello"
-        paragraph_summary = "hi man"
-        new_data_point = ProductionData(data=data, time=time, one_line_summary=one_line_summary, one_paragraph_summary=paragraph_summary)
-        session.add(new_data_point)
+        one_line_summary, one_paragraph_summary = ops.summarize(data)
+        calls = ops.get_daily_prod_data_calls()
+        recent_prod_data = ops.get_recent_prod_data()
         session.commit()
+
         return jsonify({
             "one_line_summary": one_line_summary,
-            "one_paragraph_summary": paragraph_summary
+            "one_paragraph_summary": one_paragraph_summary,
+            "num_daily_api_calls": calls,
+            "recent_api_calls": recent_prod_data
         })
 
 

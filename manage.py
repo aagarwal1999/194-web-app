@@ -1,13 +1,10 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 from config import load_config, get_log_folder, get_mysql_config
 from pbu import Logger
 from storage.shared import db
-from storage.models.dataset import Dataset
-from storage.models.production_data import ProductionData
-
+from api.cli_commands import ComputeMetricsCommand
 
 # load config from .env file
 config = load_config()
@@ -25,6 +22,7 @@ migrate.init_app(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+manager.add_command('metrics', ComputeMetricsCommand)
 
 
 if __name__ == '__main__':

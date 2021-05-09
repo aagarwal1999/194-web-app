@@ -2,7 +2,7 @@ from flask import Flask
 # TODO: clean up unused imports
 from pbu import Logger
 from storage.shared import db
-from config import load_config, get_log_folder, get_mongodb_config, get_mysql_config
+from config import load_config, get_log_folder, get_mysql_config
 from flask_migrate import Migrate
 import api.static_api as static_api
 import api.model_api as model_api

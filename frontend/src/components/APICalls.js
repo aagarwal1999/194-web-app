@@ -1,26 +1,15 @@
 import React from 'react';
-import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import {Button, Grid} from '@material-ui/core'
+import {Button, Grid, CircularProgress} from '@material-ui/core'
+import { useSelector, useDispatch } from 'react-redux'
 import Title from './Title';
+import { refreshData } from "../redux/summarize"
 
-// Generate Order Data
-function createData(id, date, name, shipTo, paymentMethod, amount) {
-  return { id, date, name, shipTo, paymentMethod, amount };
-}
-
-const rows = [
-  createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', 'VISA ⠀•••• 3719', 312.44),
-  createData(1, '16 Mar, 2019', 'Paul McCartney', 'London, UK', 'VISA ⠀•••• 2574', 866.99),
-  createData(2, '16 Mar, 2019', 'Tom Scholz', 'Boston, MA', 'MC ⠀•••• 1253', 100.81),
-  createData(3, '16 Mar, 2019', 'Michael Jackson', 'Gary, IN', 'AMEX ⠀•••• 2000', 654.39),
-  createData(4, '15 Mar, 2019', 'Bruce Springsteen', 'Long Branch, NJ', 'VISA ⠀•••• 5919', 212.79),
-];
 
 function preventDefault(event) {
   event.preventDefault();
@@ -32,8 +21,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Orders() {
+function renderAPICallButton() {
+  const is_loading = useSelector(state => state.data.refresh_loading)
+  const dispatch = useDispatch()
+  if(!is_loading){
+    return (
+      <Button variant="contained" color="primary" onClick={() => dispatch(refreshData())}> Refresh </Button>
+    )
+  }
+
+  return (
+    <Button disabled variant="contained" color="primary"> <CircularProgress size={20} /> </Button>
+  )
+}
+
+export default function APICalls() {
   const classes = useStyles();
+  const rows = useSelector(state => state.data.recent_api_calls)
+
   return (
     <React.Fragment>
       <Grid container direction="row" justify="space-between" alignItems="stretch" > 
@@ -41,27 +46,25 @@ export default function Orders() {
           <Title>Recent API Calls</Title>
         </Grid>
         <Grid item xs={2}> 
-          <Button color="primary" variant="contained"> Refresh </Button>
+          { renderAPICallButton() }
         </Grid>
       </Grid> 
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
-            <TableCell>Time</TableCell>
             <TableCell>Text</TableCell>
             <TableCell>One Line Prediction</TableCell>
             <TableCell align="right"> One Paragraph Prediction</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{row.amount}</TableCell>
+          {rows.map((row, index) => (
+            <TableRow key={index}>
+              <TableCell>{row.time.toLocaleDateString()}</TableCell>
+              <TableCell>{row.data}</TableCell>
+              <TableCell>{row.one_line_summary}</TableCell>
+              <TableCell align="right">{row.one_paragraph_summary}</TableCell>
             </TableRow>
           ))}
         </TableBody>

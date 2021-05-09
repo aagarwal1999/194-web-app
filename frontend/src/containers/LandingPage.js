@@ -1,19 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { getMetricsData } from "../redux/example";
+import { getInitialData } from "../redux/summarize";
 import Dashboard from "../components/Dashboard";
 
 
 @connect(store => ({
     // linking the redux store with this component
-    one_line_summary: store.summary.one_line_summary,
-    one_paragraph_summary: store.summary.one_paragraph_summary,
-    is_loading: store.summary.is_loading
+    summary:  store.summary,
 }))
 class LandingPage extends React.Component {
 
     componentDidMount() {
-        this.props.dispatch(getMetricsData())
+        this.props.dispatch(getInitialData())
     }
 
     render() {

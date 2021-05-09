@@ -6,6 +6,8 @@
 /templates/index.html
 travis/pip.conf
 
+data/covid_kaggle/data/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

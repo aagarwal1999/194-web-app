@@ -20,7 +20,7 @@ def main():
     file.close()
     inputs = tokenizer.encode("summarize: " + article, return_tensors="pt", max_length=512, truncation=True)
     outputs = model.generate(inputs, max_length=args.max_len, min_length=args.min_len, length_penalty=1.5, num_beams=4, early_stopping=True)
-    print(tokenizer.decode(outputs[0])) # currently print the summarization in console
+    print(tokenizer.decode(outputs[0]))  # currently print the summarization in console
 
 
 if __name__ == '__main__':

@@ -29,12 +29,16 @@ class APICallBox extends React.Component {
 
     if(!this.props.is_loading){
       return (
-        <Button variant="contained" color="primary" onClick={() => this.props.dispatch(getSummary(this.state.api_call_text))}> Call API </Button>
+        <Button variant="contained" color="primary" onClick={() => {
+          if(this.state.api_call_text === ""){
+            return
+          }
+          this.props.dispatch(getSummary(this.state.api_call_text))
+        }}> Call API </Button>
       )
     }
-
     return (
-      <Button disabled variant="contained" color="primary" onClick={() => this.props.dispatch(getSummary(this.state.api_call_text))}> <CircularProgress size={20} /> </Button>
+      <Button disabled variant="contained" color="primary" > <CircularProgress size={20} /> </Button>
     )
     
 
