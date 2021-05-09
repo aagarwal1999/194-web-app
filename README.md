@@ -16,14 +16,13 @@ Project template / boilerplate for a micro-service providing endpoints via Flask
 
 - Python3.6+
 - NodeJS / npm
-- MongoDB **or** MySQL
+- HuggingFace
 
 ### Tech Stack
 
 **Backend**
 
 - **Flask** framework for hosting API endpoints and delivering the frontend
-- **pymongo** for MongoDB access
 - **mysql-connector-python** for MySQL access
 
 **Frontend**
@@ -32,61 +31,14 @@ Project template / boilerplate for a micro-service providing endpoints via Flask
 - **Redux** a global store for the frontend, used for data exchange with the API and to avoid handing down data through
 component hierarchies
 - **Webpack** and **Babel** to transpile the frontend into a single `index.js`, which gets included by the `index.html`
-- **Plotly.JS** a Javascript adaptation of the popular Python charting library Plotly
 - **Moment.JS** the standard library for date/time handling in JavaScript
 - **S Alert** a basic notification library 
 - **ESLint** and **Prettier** for linting Javascript code and auto-format
 - Custom **Basic Utilities** and **Style Mixins** (see `frontend/src/util.js` and `frontend/src/mixins.js`)
 
-## Customisation
-
-The following changes should be performed at the beginning of a project based on this repository:
-
-**Choose a Database**
-
-The boilerplate offers support for 2 different databases: MongoDB and MySQL. The following adaptations are required to 
-pick one:
-
-- Update the `requirements.txt` and remove the database driver for the database you don't need.
-- Update the `config.py` and remove the environment variables for the database you don't need (they're prefixed with 
-`MONGO_` or `MYSQL_`).
-- Update the `runner.py` and potentially remove the MySQL related connection stuff, if you decide to use MongoDB.
-- Create a copy of the `.env.template` file and call it `.env`. This file will be used to load environment variables 
-like the database credentials from this file (which is also on `.gitignore`). Remove the database parameters for the 
-database you don't need
-- Remove the example store of the database you _didn't_ choose from the `storage/` folder.
-
-**Create Stores**
-
-After having chosen a database, you can now start to create stores. We recommend having separate `.py` files for each
-table / collection in the `storage/` folder.
-
-The stores are initialised in the `runner.py` and references to these stores are stored in the `stores` dictionary, 
-which allows to easily pass all database stores into other components such as API handler or data adapter components.
-Clean up the `TODO` items in the `runner.py` and remove traces of the database functions you don't need.
-
-**Remove Example API**
-
-The Flask app provides the following illustrative examples how to access a database, which should be removed to avoid 
-confusion:
-
-- `storage/example_mongo_store.py` - an example implementation of a very basic MongoDB collection
-- `storage/example_mysql_store.py` - an example implementation of a very basic MySQL table
-    - `storage/resources/tables/examples.sql` - table definition for this table
-- `api/example_api.py` - example endpoints for getting and creating example entries. Uses MongoDB as example
-    - `runner.py` contains the registration of these endpoints (clean up `import` and `register_endpoints` call)
-- `frontend/src/redux` - remove the `example.js` and also remove the reference and registration of the Redux store in 
-`reducers.js`
-- `frontend/src/containers/LandingPage` - remove connection to example store (see the `@connect` section) and remove the
-dispatch of the `getExamples()` event in the `componentDidMount()` hook.
-
-**Change Frontend Title**
-
-The template for the index.html is located here: `frontend/index.html`.
-Webpack will use that file and inject the script which represents the transpiled frontend. Note: the 
-`templates/index.html` is created by Webpack and will be overwritten every time the frontend compiles.
-
 ## Installation
+
+### Install Packages 
 
 First, try to run:
 
@@ -114,6 +66,28 @@ _Python:_
 ```bash
 pip install -r requirements.txt
 ```
+
+### Set Up MySQL
+
+The first thing to do is set up the environment variable files. Create a file called `.env` and 
+populate it with the following items: 
+
+
+
+The backing database is a MySQL store. To set up the database, you need to 
+install mysql. If you are on a mac, you can run: 
+
+`brew install mysql`
+
+After this, you can access the command line as follows: 
+
+`mysql`
+
+Then run the following commands: 
+
+`CREATE DATABASE {database_name}`
+
+
 
 ## Running the App
 
